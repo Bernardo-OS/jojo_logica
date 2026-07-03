@@ -8,7 +8,7 @@
 
 #Seu objetivo é descobrir quais fios cortar e em que ordem.
 
-#Cada erro diminui o tempo restante.
+#Bomba explode se o tempo acabar ou se errar o fio.
 
 import sys
 import threading
@@ -18,7 +18,7 @@ import msvcrt
 
 
 #######CONTROLE DE TEMPO############
-tempo_limite = 120  # segundos
+tempo_limite = 20  # segundos
 intervalo_aviso = 15
 
 
@@ -117,5 +117,6 @@ while not evento_fim.is_set() and i < len(sequencia_correta):
         break
 
 
-if not evento_fim.is_set() and i < len(sequencia_correta):
-    print("Tempo esgotado! A bomba explodiu!")
+#if not evento_fim.is_set() and i < len(sequencia_correta):
+if i < len(sequencia_correta):
+    print("Tempo esgotado. A bomba explodiu! A sequência correta era:", sequencia_correta)
