@@ -24,7 +24,7 @@ print("Levando em consideração que as proposições devem dar valor verdadeiro
 print("O valor positivo significa no caso desconectá-lo do circuito, você deve preencher em sequência de acordo com a solução das proposições os fios que cortar corretamente.")
 input("Pressione Enter para começar o jogo")
 print("As pistas são as seguintes:")
-print("(1) R → B \n (2) ~(R ∧ G) \n(3) B ∨ G \n(4) Y → B \n(5) R")
+print("(1) R → B \n(2) ~(R ∧ G) \n(3) B ∨ G \n(4) Y → B \n(5) R")
 sequencia_correta = ["R", "B", "G", "Y"]  # Sequência correta de fios a cortar
 inicio = time.time()
 
@@ -34,29 +34,28 @@ tempo_decorrido = time.time() - inicio
         print("Tempo esgotado! A bomba explodiu!")
         break
 """
+i = 0
 
 while time.time() - inicio < tempo_limite:
     tempo_restante = int(tempo_limite - (time.time() - inicio))
-    i = 0
+    
     resposta = input("Digite o próximo fio a cortar (r, b, g, y, w, k): ").upper()
-    i+=1
 
     if resposta != sequencia_correta[i]:
-        print("Fio incorreto!")
+        print("Fio incorreto! Bomba expludiu! A sequência correta era:", sequencia_correta)
         break
+    
+    elif resposta == sequencia_correta[i]:
+        i += 1
+        print("Fio correto!")
 
-    if i == len(sequencia_correta) and sequencia_correta[i] == resposta:
+    if i == len(sequencia_correta) and sequencia_correta[-1] == resposta:
         print("Parabéns! Você desarmou a bomba com sucesso!")
         break
-    else:
-        print("Sequência incorreta! Tente novamente.")
-        
-if tempo_restante <= 0:
-    print("Tempo esgotado!")
-print("Bomba explodiu! A sequência correta era:", sequencia_correta)
+    
+    if tempo_restante <= 0:
+        print("Tempo esgotado! Bomba explodiu!")
+        break
 
-
-
-    '''
-    print(f"Tempo restante: {tempo_restante}s")
-    '''
+    
+    #print(f"Tempo restante: {tempo_restante}s")
