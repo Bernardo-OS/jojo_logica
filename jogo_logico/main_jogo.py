@@ -18,7 +18,7 @@ import msvcrt
 
 
 #######CONTROLE DE TEMPO############
-tempo_limite = 20  # segundos
+tempo_limite = 70  # segundos
 intervalo_aviso = 15
 
 
