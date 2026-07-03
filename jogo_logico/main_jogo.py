@@ -10,11 +10,69 @@
 
 #Cada erro diminui o tempo restante.
 
+import sys
+import threading
 import time
 
-tempo_limite = 180  # segundos
+import msvcrt
 
 
+#######CONTROLE DE TEMPO############
+tempo_limite = 120  # segundos
+intervalo_aviso = 15
+
+
+def ler_entrada_com_tempo_limite(mensagem, evento_fim, tempo_inicio):
+    print(mensagem, end="", flush=True)
+    entrada = []
+
+    while not evento_fim.is_set():
+        if msvcrt.kbhit():
+            caractere = msvcrt.getwch()
+
+            if caractere in ("\r", "\n"):
+                print()
+                return "".join(entrada).strip()
+
+            if caractere == "\b":
+                if entrada:
+                    entrada.pop()
+                    sys.stdout.write("\b \b")
+                    sys.stdout.flush()
+                continue
+
+            entrada.append(caractere)
+            sys.stdout.write(caractere)
+            sys.stdout.flush()
+
+        if time.time() - tempo_inicio >= tempo_limite:
+            evento_fim.set()
+            break
+
+        time.sleep(0.05)
+
+    print()
+    return None
+
+
+def controlar_tempo(evento_fim, tempo_inicio):
+    proximo_aviso = intervalo_aviso
+
+    while not evento_fim.is_set():
+        tempo_decorrido = time.time() - tempo_inicio
+
+        if tempo_decorrido >= tempo_limite:
+            print("Tempo esgotado! A bomba explodiu!")
+            evento_fim.set()
+            break
+
+        if tempo_decorrido >= proximo_aviso:
+            tempo_restante = max(0, int(tempo_limite - tempo_decorrido))
+            print(f"\n{tempo_restante} segundos restantes.")
+            proximo_aviso += intervalo_aviso
+
+        time.sleep(0.2)
+###################################
 
 print("Bem-vindo ao jogo da bomba lógica")
 print("Você precisa cortar os fios na ordem correta para desarmar a bomba.")
@@ -27,35 +85,37 @@ print("As pistas são as seguintes:")
 print("(1) R → B \n(2) ~(R ∧ G) \n(3) B ∨ G \n(4) Y → B \n(5) R")
 sequencia_correta = ["R", "B", "G", "Y"]  # Sequência correta de fios a cortar
 inicio = time.time()
+evento_fim = threading.Event()
+thread_tempo = threading.Thread(target=controlar_tempo, args=(evento_fim, inicio), daemon=True)
+thread_tempo.start()
 
-"""
-tempo_decorrido = time.time() - inicio
-    if tempo_decorrido >= tempo_limite:
-        print("Tempo esgotado! A bomba explodiu!")
-        break
-"""
 i = 0
 
-while time.time() - inicio < tempo_limite:
-    tempo_restante = int(tempo_limite - (time.time() - inicio))
-    
-    resposta = input("Digite o próximo fio a cortar (r, b, g, y, w, k): ").upper()
+while not evento_fim.is_set() and i < len(sequencia_correta):
+    resposta = ler_entrada_com_tempo_limite(
+        "Digite o próximo fio a cortar (r, b, g, y, w, k): ",
+        evento_fim,
+        inicio,
+    )
+
+    if resposta is None:
+        break
+
+    resposta = resposta.upper()
 
     if resposta != sequencia_correta[i]:
         print("Fio incorreto! Bomba expludiu! A sequência correta era:", sequencia_correta)
+        evento_fim.set()
         break
-    
-    elif resposta == sequencia_correta[i]:
-        i += 1
-        print("Fio correto!")
 
-    if i == len(sequencia_correta) and sequencia_correta[-1] == resposta:
+    i += 1
+    print("Fio correto!")
+
+    if i == len(sequencia_correta):
         print("Parabéns! Você desarmou a bomba com sucesso!")
-        break
-    
-    if tempo_restante <= 0:
-        print("Tempo esgotado! Bomba explodiu!")
+        evento_fim.set()
         break
 
-    
-    #print(f"Tempo restante: {tempo_restante}s")
+
+if not evento_fim.is_set() and i < len(sequencia_correta):
+    print("Tempo esgotado! A bomba explodiu!")
