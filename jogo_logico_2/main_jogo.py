@@ -93,6 +93,7 @@ print("As pistas são as seguintes:")
 print(desafio.pistas)
 
 sequencia_correta = desafio.dividir_fios(desafio.sequencia)
+#sequencia_correta = ["R", "B", "G", "Y"]
 inicio = time.time()
 evento_fim = threading.Event()
 thread_tempo = threading.Thread(target=controlar_tempo, args=(evento_fim, inicio), daemon=True)
@@ -127,5 +128,5 @@ while not evento_fim.is_set() and i < len(sequencia_correta):
 
 
 #if not evento_fim.is_set() and i < len(sequencia_correta):
-if i < len(sequencia_correta):
+if i < len(sequencia_correta) and not evento_fim.is_set():
     print("Tempo esgotado. A bomba explodiu! A sequência correta era:", sequencia_correta)
