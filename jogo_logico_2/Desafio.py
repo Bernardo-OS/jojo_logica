@@ -15,13 +15,22 @@ class Desafio(object):
                 if len(partes) >= 3:
                     numero = partes[0].strip()
                     pistas = partes[1].strip()
-                    sequencia = [p.strip() for p in partes[2:]]
+                    sequencia = partes[2].strip()
+                    #sequencia = [p.strip() for p in partes[2:]]
                     desafios.append(Desafio(numero, pistas, sequencia))
         return desafios
     
+    '''
+    def dividir_fios(self, sequencia):
+        for fio in sequencia.split(","):
+            add_fio = fio.strip()
+            sequencia_correta.append(add_fio)
+        return sequencia_correta
+    '''
+    
     def dividir_fios(self, sequencia):
         return [fio.strip() for fio in sequencia.split(",")]
-
+    
     def obter_desafio_por_numero(self, numero):
         desafios = self.ler_arquivo_csv("desafios.csv")
         for desafio in desafios:
