@@ -14,3 +14,5 @@
 *The program runs right in the terminal. Accepting input by the string of the letter corresponding to the colors of the wires*
 
 *Python vertion 3.14.4*
+
+//jogo_logico is the first vertion with the basic game system working, jogo_logico_2 is the newer vertion with the verification of the register of each challenge with it's clues, correct sequences and time for resolution
