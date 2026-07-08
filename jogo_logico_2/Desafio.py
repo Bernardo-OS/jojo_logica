@@ -1,8 +1,9 @@
 class Desafio(object):
-    def __init__(self, numero, pistas, sequencia):
+    def __init__(self, numero, pistas, sequencia, tempo):
         self.numero = numero
         self.pistas = pistas
         self.sequencia = sequencia
+        self.tempo = tempo  # Tempo limite padrão em segundos
 
     def __str__(self):
         return f"Desafio: {self.numero}, Pistas: {self.pistas}, Sequencia: {self.sequencia}"
@@ -17,7 +18,8 @@ class Desafio(object):
                     pistas = partes[1].strip()
                     sequencia = partes[2].strip()
                     #sequencia = [p.strip() for p in partes[2:]]
-                    desafios.append(Desafio(numero, pistas, sequencia))
+                    tempo = int(partes[3].strip()) if len(partes) > 3 else 60  # Valor padrão de tempo
+                    desafios.append(Desafio(numero, pistas, sequencia, tempo))
         return desafios
     
     '''
