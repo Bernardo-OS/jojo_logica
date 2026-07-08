@@ -20,9 +20,7 @@ import Desafio
 
 
 #######CONTROLE DE TEMPO############
-tempo_limite = 60  # segundos
 intervalo_aviso = 15
-
 
 def ler_entrada_com_tempo_limite(mensagem, evento_fim, tempo_inicio):
     print(mensagem, end="", flush=True)
@@ -83,12 +81,12 @@ print("Vermelho (R), Azul (B), Verde (G), Amarelo (Y), Branco (W), Preto (K)")
 print("Levando em consideração que as proposições devem dar valor verdadeiro para a bomba desarmar sem explodir.")
 print("O valor positivo significa no caso desconectá-lo do circuito, você deve preencher em sequência de acordo com a solução das proposições os fios que cortar corretamente.")
 numero_desafio = input("Coloque o número correspondente ao desafio que deseja jogar (1, 2, 3, 4 ou 5) e pressione Enter: ")
-desafio = Desafio.Desafio(0, "", [])
+desafio = Desafio.Desafio(0, "", [], 0)
 desafio = desafio.obter_desafio_por_numero(numero_desafio)
 if desafio is None:
     print("Número de desafio inválido. Encerrando o jogo.")
     sys.exit(1)
-
+tempo_limite = desafio.tempo  # segundos
 print("As pistas são as seguintes:")
 print(desafio.pistas)
 
