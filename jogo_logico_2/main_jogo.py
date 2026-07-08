@@ -20,7 +20,7 @@ import Desafio
 
 
 #######CONTROLE DE TEMPO############
-tempo_limite = 20  # segundos
+tempo_limite = 60  # segundos
 intervalo_aviso = 15
 
 
